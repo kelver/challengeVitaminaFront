@@ -9,13 +9,13 @@
                 <h1 class="text-3xl font-bold text-center mb-4 cursor-pointer">Acesse sua conta</h1>
             </div>
             <div class="space-y-4">
-                <input type="text" placeholder="E-mail"
+                <input type="text" placeholder="E-mail" v-model="email" name="email"
                        class="block text-sm py-3 px-4 rounded-lg w-full border outline-none" />
-                <input type="text" placeholder="Senha"
+                <input type="text" placeholder="Senha" v-model="password" name="password"
                        class="block text-sm py-3 px-4 rounded-lg w-full border outline-none" />
             </div>
             <div class="text-center mt-6">
-                <button class="py-3 w-64 text-xl text-white bg-purple-400 rounded-2xl">Acesse</button>
+                <button @click="access" class="py-3 w-64 text-xl text-white bg-purple-400 rounded-2xl">Acesse</button>
                 <p class="mt-4 text-sm">Não possui uma conta?
                     <router-link to="/register" class="underline cursor-pointer">Cadastre-se</router-link>
                 </p>
@@ -31,11 +31,30 @@
 <script>
 export default {
     name: 'HomeView',
+    data () {
+        return {
+            email: '',
+            password: '',
+        }
+    },
+    methods: {
+        async access () {
+            let user = {
+                email: this.email,
+                password: this.password,
+            }
+
+            await this.$http.post('/auth/login', user)
+                .then(response => {
+                    localStorage.setItem('token', response.data.data.token)
+                    setTimeout(() => {
+                        this.$router.push('/home')
+                    }, 1000)
+                })
+                .catch(error => {
+                    console.log(error.response)
+                })
+        }
+    }
 }
 </script>
-
-<style>
-body {
-    overflow: hidden;
-}
-</style>

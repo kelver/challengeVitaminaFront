@@ -9,15 +9,18 @@
                 <h1 class="text-3xl font-bold text-center mb-4 cursor-pointer">Crie sua conta</h1>
             </div>
             <div class="space-y-4">
-                <input type="text" placeholder="Nome"
+                <input type="text" placeholder="Nome" v-model="name" name="name"
                        class="block text-sm py-3 px-4 rounded-lg w-full border outline-none" />
-                <input type="text" placeholder="E-Mail"
+                <input type="text" placeholder="E-Mail" v-model="email" name="email"
                        class="block text-sm py-3 px-4 rounded-lg w-full border outline-none" />
-                <input type="text" placeholder="Senha"
+                <input type="password" placeholder="Senha" v-model="password" name="password"
+                       class="block text-sm py-3 px-4 rounded-lg w-full border outline-none" />
+                <input type="password" placeholder="Confirme a senha" v-model="password_confirmation" name="password_confirmation"
                        class="block text-sm py-3 px-4 rounded-lg w-full border outline-none" />
             </div>
             <div class="text-center mt-6">
-                <button class="py-3 w-64 text-xl text-white bg-purple-400 rounded-2xl">Criar Conta</button>
+                <button @click.stop="register" class="py-3 w-64 text-xl text-white bg-purple-400 rounded-2xl">Criar
+                    Conta</button>
                 <p class="mt-4 text-sm">Já tem uma conta?
                     <router-link to="/" class="underline cursor-pointer"> Acesse</router-link>
                 </p>
@@ -33,11 +36,34 @@
 <script>
 export default {
     name: 'HomeView',
+    data () {
+        return {
+            name: '',
+            email: '',
+            password: '',
+            password_confirmation: '',
+        }
+    },
+    methods: {
+        async register () {
+            let user = {
+                name: this.name,
+                email: this.email,
+                password: this.password,
+                password_confirmation: this.password_confirmation,
+            }
+
+            await this.$http.post('/auth/register', user)
+                .then(response => {
+                    localStorage.setItem('token', response.data.data.token)
+                    setTimeout(() => {
+                        this.$router.push('/home')
+                    }, 1000)
+                })
+                .catch(error => {
+                    console.log(error.response)
+                })
+        }
+    }
 }
 </script>
-
-<style>
-body {
-    overflow: hidden;
-}
-</style>
