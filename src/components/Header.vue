@@ -58,28 +58,16 @@
                         <img
                             class="object-cover w-10 h-10 rounded-full"
                             src="https://www.hyperui.dev/photos/man-4.jpeg"
-                            alt="Simon Lewis"
+                            alt="{{ this.user.name }}"
                         />
 
                         <p class="hidden ml-2 text-xs text-left sm:block">
-                            <strong class="block font-medium">Simon Lewis</strong>
+                            <strong class="block font-medium">{{ this.name }}</strong>
 
-                            <span class="text-gray-500"> simonlewis@fakemail.com </span>
+                            <span class="text-gray-500"> {{ this.email }} </span>
                         </p>
-
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="hidden w-5 h-5 ml-4 text-gray-500 transition sm:block group-hover:text-gray-700"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                        >
-                            <path
-                                fill-rule="evenodd"
-                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                clip-rule="evenodd"
-                            />
-                        </svg>
                     </button>
+                    <span @click="logout" class="text-red-500 text-sm cursor-pointer"> Sair </span>
                 </div>
             </div>
         </div>
@@ -88,6 +76,18 @@
 
 <script>
 export default {
-    name: 'HeaderComponent'
+    name: 'HeaderComponent',
+    data () {
+        return {
+            name: localStorage.getItem('user.name'),
+            email: localStorage.getItem('user.email'),
+        }
+    },
+    methods: {
+        logout () {
+            localStorage.clear()
+            this.$router.push('/')
+        },
+    },
 }
 </script>
