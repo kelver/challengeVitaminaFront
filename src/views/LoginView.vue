@@ -11,7 +11,7 @@
             <div class="space-y-4">
                 <input type="text" placeholder="E-mail" v-model="email" name="email"
                        class="block text-sm py-3 px-4 rounded-lg w-full border outline-none" />
-                <input type="text" placeholder="Senha" v-model="password" name="password"
+                <input type="password" placeholder="Senha" v-model="password" name="password"
                        class="block text-sm py-3 px-4 rounded-lg w-full border outline-none" />
             </div>
             <div class="text-center mt-6">
